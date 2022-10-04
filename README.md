@@ -60,7 +60,7 @@ Lib:
 
 ==========================================<br />
 System design
-<div align="center">
-<img alt="System design" src="https://i.ibb.co/7gj95Xs/system-design.png" width=280>
+<div align="left">
+<img alt="System design" src="https://i.ibb.co/7gj95Xs/system-design.png">
 </div>
 
