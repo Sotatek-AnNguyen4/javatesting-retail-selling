@@ -1,5 +1,5 @@
-# javatesting-retail-selling
-Business requirement
+
+# Business requirement
 
 1. The system has 2 main module, Customer and Retail. The customer will buy production from the retail via his / her pre-deposited account.
 2. Buy product flow is that, customer submit an order for x quantity product. The order should have product sku and quantity (how many product the customer want to buy) information. Then the total amount (quantity * price) is deducted from customer’s pre-deposited account. And the amount would be added to retail account, the quantity would be deducted from retail inventory.
@@ -28,7 +28,7 @@ Object: Customer, Retail
     - increase the product inventory
 
 ==========================================<br />
-System design requirement
+# System design requirement
 
 1. The system should be implemented with Java programing language.  Using Spring, Spring Boot and Spring Cloud tech stack.
 2. The system would provide REST API to the client, and the REST API design should follow REST API best practices.
@@ -46,7 +46,7 @@ System design requirement
 6. DDD design
 
 ==========================================<br />
-Project structure
+# Project structure
 
 Services:
 1. Gateway
@@ -59,7 +59,7 @@ Lib:
 2. Data
 
 ==========================================<br />
-System design
+# System design
 <div align="left">
 <img alt="System design" src="https://i.ibb.co/7gj95Xs/system-design.png">
 </div>
