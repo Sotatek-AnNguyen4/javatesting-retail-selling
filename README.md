@@ -53,7 +53,7 @@ Services:
 2. Pre-Deposited account
 3. Order
 4. Retail account
-5. Retail inventory
+5. Retail inventory<br />
 Lib:
 1. Parent
 2. Data
