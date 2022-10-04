@@ -27,7 +27,7 @@ Object: Customer, Retail
     - quantity sold
     - increase the product inventory
 
-==========================================
+==========================================<br />
 System design requirement
 
 1. The system should be implemented with Java programing language.  Using Spring, Spring Boot and Spring Cloud tech stack.
@@ -45,7 +45,7 @@ System design requirement
 5. SOLID principles
 6. DDD design
 
-==========================================
+==========================================<br />
 Project structure
 
 Services:
@@ -58,7 +58,7 @@ Lib:
 1. Parent
 2. Data
 
-==========================================
+==========================================<br />
 System design
 <div align="center">
 <img alt="System design" src="https://i.ibb.co/7gj95Xs/system-design.png" width=280>
