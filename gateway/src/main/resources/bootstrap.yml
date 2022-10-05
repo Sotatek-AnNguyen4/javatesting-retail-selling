@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        ip-address: 10.2.49.215
+#        hostname: gateway
+
+        port: 8080
+        healthCheckPath: /health
+      host: 127.0.0.1
+      port: 8500
+      enabled: true

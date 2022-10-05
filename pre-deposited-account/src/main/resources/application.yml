@@ -5,3 +5,7 @@ server:
 spring:
   application:
     name: pre-deposited-account
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
