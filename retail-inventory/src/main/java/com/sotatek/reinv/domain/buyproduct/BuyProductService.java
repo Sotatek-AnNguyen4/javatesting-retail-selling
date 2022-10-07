@@ -77,6 +77,13 @@ public class BuyProductService {
 		      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
 		      .body(new CallbackStateResDto(orderId, "sold"));
 			
+			HttpResponse<JsonNode> customerResponse = Unirest.post("http://localhost:8080/retail-account/receive-amount")
+				      .header("Content-Type", "application/json")
+				      .header("userId", customerId.toString())
+				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
+				      .body(new PayOrderResDto(totalAmount, customerId))
+				      .asJson();
+			
 			orders.stream().forEach(order -> {
 				ProductHistory productHistory = new ProductHistory();
 				productHistory.createTime = new Date();

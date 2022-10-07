@@ -41,12 +41,6 @@ public class CreateOrderService {
 			for (CreateOrderReqDto createOrderReqDto : products) {
 				totalAmount += createOrderReqDto.price * createOrderReqDto.quantity;
 			}
-//			HttpResponse<JsonNode> response = Unirest.post("http://localhost:8080/pre-deposited-account/pay-order")
-//				      .header("Content-Type", "application/json")
-//				      .header("userId", customerId.toString())
-//				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-//				      .body(new PayOrderResDto(totalAmount, customerId))
-//				      .asJson();
 			Order order = new Order();
 			order.customerId = customerId;
 			order.createTime = new Date();
