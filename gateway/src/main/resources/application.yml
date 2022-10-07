@@ -5,6 +5,9 @@ server:
 spring:
   application:
     name: gateway
+  redis:
+    host: localhost
+    port: 6379
   cloud:
     loadbalancer:
       ribbon:
@@ -13,4 +16,7 @@ spring:
       discovery:
         locator:
           enabled: true
+      default-filters:
+        - name: AuthenUserFilter
+        - name: ModifyHeaderFilter
         

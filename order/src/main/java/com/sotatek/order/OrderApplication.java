@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @SpringCloudApplication
-@EnableScheduling
 public class OrderApplication {
 
 	public static void main(String[] args) {
