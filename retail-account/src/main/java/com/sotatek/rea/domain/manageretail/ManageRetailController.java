@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("retail/")
+@RequestMapping("retail")
 public class ManageRetailController {
 
 	@Autowired

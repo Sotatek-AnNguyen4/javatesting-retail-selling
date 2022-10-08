@@ -7,16 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sotatek.order.domain.createorder.PayOrderResDto;
 import com.sotatek.reinv.infrastructure.model.Product;
 import com.sotatek.reinv.infrastructure.model.ProductHistory;
 import com.sotatek.reinv.infrastructure.repository.ProductHistoryRepository;
 import com.sotatek.reinv.infrastructure.repository.ProductRepository;
-import com.sotatek.reinv.infrastructure.util.GatewayConst;
 
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
-import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import lombok.extern.log4j.Log4j2;
 
@@ -29,6 +24,15 @@ public class BuyProductService {
 	
 	@Autowired
 	private ProductHistoryRepository productHistoryRepository;
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private PreDepositedAccountService preDepositedAccountService;
+	
+	@Autowired
+	private RetailAccountService retailAccountService;
 	
 	public String buyProduct(List<OrdersReqDto> orders, Long customerId) {
 		try {
@@ -48,52 +52,26 @@ public class BuyProductService {
 				order.product = product;
 				totalAmount += product.price * order.quantity;
 			}
-			HttpResponse<JsonNode> orderResponse = Unirest.post("http://localhost:8080/order/create-order")
-				      .header("Content-Type", "application/json")
-				      .header("userId", customerId.toString())
-				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-				      .body(createOrderList)
-				      .asJson();
 			
-			if(orderResponse.getStatus() != 200) {
-				throw new ExceptionInInitializerError();
-			}
-			JsonNode rootNode = orderResponse.getBody();
-			JSONObject rootObj = rootNode.getObject();
-			Long orderId = rootObj.getLong("id");
+			JSONObject order = orderService.createOrder(customerId, createOrderList);
+			Long orderId = order.getLong("id");
 			
-			HttpResponse<JsonNode> customerResponse = Unirest.post("http://localhost:8080/pre-deposited-account/pay-order")
-				      .header("Content-Type", "application/json")
-				      .header("userId", customerId.toString())
-				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-				      .body(new PayOrderResDto(totalAmount, customerId))
-				      .asJson();
-			if(customerResponse.getStatus() != 200) {
-				throw new ExceptionInInitializerError();
-			}
+			preDepositedAccountService.payOrder(customerId, totalAmount);
 			// callback to order
-			Unirest.post("http://localhost:8080/order/callback-state")
-		      .header("Content-Type", "application/json")
-		      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-		      .body(new CallbackStateResDto(orderId, "sold"));
+			orderService.callbackState(orderId);
 			
-			HttpResponse<JsonNode> customerResponse = Unirest.post("http://localhost:8080/retail-account/receive-amount")
-				      .header("Content-Type", "application/json")
-				      .header("userId", customerId.toString())
-				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-				      .body(new PayOrderResDto(totalAmount, customerId))
-				      .asJson();
+			retailAccountService.receiveAmount(orders, orderId);
 			
-			orders.stream().forEach(order -> {
+			orders.stream().forEach(od -> {
 				ProductHistory productHistory = new ProductHistory();
 				productHistory.createTime = new Date();
 				productHistory.orderId = orderId;
-				productHistory.quantity = order.quantity;
+				productHistory.quantity = od.quantity;
 				productHistory.type = "buy";
-				productHistory.product = order.product;
+				productHistory.product = od.product;
 				productHistoryRepository.save(productHistory);
 			});
-			return rootObj.toString();
+			return order.toString();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return null;

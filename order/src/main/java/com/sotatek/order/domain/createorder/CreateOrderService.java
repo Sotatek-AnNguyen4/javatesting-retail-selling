@@ -66,6 +66,7 @@ public class CreateOrderService {
 		try {
 			Order order = orderRepository.findById(orderId).get();
 			order.state = state;
+			order.createTime = new Date();
 			orderRepository.save(order);
 			return order;
 		} catch (Exception e) {

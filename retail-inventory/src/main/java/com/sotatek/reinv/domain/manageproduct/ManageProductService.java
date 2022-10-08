@@ -21,7 +21,7 @@ public class ManageProductService {
 	
 	public Product addProduct(Product product) {
 		try {
-			HttpResponse<JsonNode> response = Unirest.post("http://localhost:8080/retail-account/findByRetailId?retailId="+product.retailId)
+			HttpResponse<JsonNode> response = Unirest.get("http://localhost:8080/retail-account/retail/findByRetailId?retailId="+product.retailId)
 				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
 				      .asJson();
 			if(response.getStatus() != 200) {

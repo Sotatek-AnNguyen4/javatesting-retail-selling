@@ -1,4 +1,4 @@
-package com.sotatek.order.domain.createorder;
+package com.sotatek.reinv.domain.buyproduct;
 
 import java.util.List;
 
@@ -9,21 +9,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sotatek.order.infrastructure.model.Order;
-
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("create-order")
-public class CreateOrderController {
+@RequestMapping("buy-product")
+public class BuyProductController {
 	
 	@Autowired
-	private CreateOrderService createOrderService;
+	private BuyProductService buyProductService;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public Order createOrder(@RequestHeader(value="userId") String userId, @RequestBody List<CreateOrderReqDto> products) throws Exception {
-		Order result = createOrderService.createOrder(products, Long.parseLong(userId));
+    public String buyProduct(@RequestBody List<OrdersReqDto> orders, @RequestHeader(value="userId") String userId) throws Exception {
+		String result = buyProductService.buyProduct(orders, Long.parseLong(userId));
 		if(result == null) {
 			throw new Exception();
 		}

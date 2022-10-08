@@ -12,24 +12,27 @@ import com.sotatek.prda.domain.deposit.DepositService;
 import com.sotatek.prda.domain.managecustomer.ManageCustomerService;
 import com.sotatek.prda.infrastructure.model.AccountHistory;
 import com.sotatek.prda.infrastructure.model.Customer;
+import com.sotatek.prda.infrastructure.util.ResponseData;
 
+import kong.unirest.HttpResponse;
+import kong.unirest.HttpStatus;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("deposit/")
+@RequestMapping("deposit")
 public class DepositController {
 
 	@Autowired
 	private DepositService depositService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public AccountHistory deposit(@RequestHeader(value="userId") String userId, @RequestBody DepositReqDto request) throws Exception {
+    public ResponseData deposit(@RequestHeader(value="userId") String userId, @RequestBody DepositReqDto request) throws Exception {
 		AccountHistory result = depositService.deposit(request.value, Long.parseLong(userId));
 		if(result == null) {
-			throw new Exception();
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, "");
 		}
-        return result;
+		return new ResponseData<AccountHistory>(HttpStatus.OK, result);
     }
 
 }

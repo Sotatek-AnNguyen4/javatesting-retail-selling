@@ -15,13 +15,13 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/manage-product")
+@RequestMapping("product")
 public class ManageProductController {
 	
 	@Autowired
 	private ManageProductService manageProductService;
 
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = "add", method = RequestMethod.POST)
     public Product manageProduct(@RequestBody Product product) throws Exception{
 		Product result = manageProductService.addProduct(product);
 		if(result == null) {

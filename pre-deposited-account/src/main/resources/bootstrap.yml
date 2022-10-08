@@ -3,7 +3,7 @@ spring:
     consul:
       discovery:
         prefer-ip-address: true
-        ip-address: 10.2.51.171
+        ip-address: 10.2.51.80
 #        hostname: pre-deposited-account
 
         port: 8081

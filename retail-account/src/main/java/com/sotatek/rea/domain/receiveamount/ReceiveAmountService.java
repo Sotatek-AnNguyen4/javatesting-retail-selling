@@ -1,6 +1,7 @@
 package com.sotatek.rea.domain.receiveamount;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
 
@@ -29,34 +30,35 @@ public class ReceiveAmountService {
 	@Autowired
 	private RetailRepository retailRepository;
 	
-	public AccountHistory receiveAmount(Long retailId, Long amount, Long orderId) {
-		try {
-			Retail retail = retailRepository.findById(retailId).get();
-			if(retail == null) {
-				throw new AccountNotFoundException();
-			}
-			
-			Account account = accountRepository.findByRetailId(retailId);
-			if(account == null) {
-				account = new Account();
-				account.balance = 0L;
-				account.retail = retail;
+	public void receiveAmount(List<ReceiveAmountReqDto> request) {
+		for(ReceiveAmountReqDto receiveAmount: request) {
+			try {
+				Retail retail = retailRepository.findById(receiveAmount.retailId).get();
+				if(retail == null) {
+					throw new AccountNotFoundException();
+				}
+				
+				Account account = accountRepository.findByRetailId(receiveAmount.retailId);
+				if(account == null) {
+					account = new Account();
+					account.balance = 0L;
+					account.retail = retail;
+					accountRepository.save(account);
+				}
+				account.balance = account.balance + receiveAmount.amount;
 				accountRepository.save(account);
+				
+				AccountHistory accountHistory = new AccountHistory();
+				accountHistory.amount = receiveAmount.amount;
+				accountHistory.createTime = new Date();
+				accountHistory.retail = retail;
+				accountHistory.orderId = receiveAmount.orderId;
+				accountHistory.type = "receive";
+				accountHistoryRepository.save(accountHistory);
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
-			account.balance = account.balance + amount;
-			accountRepository.save(account);
 			
-			AccountHistory accountHistory = new AccountHistory();
-			accountHistory.amount = amount;
-			accountHistory.createTime = new Date();
-			accountHistory.retail = retail;
-			accountHistory.orderId = orderId;
-			accountHistory.type = "receive";
-			accountHistoryRepository.save(accountHistory);
-			return accountHistory;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return null;
 		}
 	}
 }

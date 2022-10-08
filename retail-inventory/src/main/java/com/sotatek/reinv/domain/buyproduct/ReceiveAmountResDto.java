@@ -1,5 +1,15 @@
 package com.sotatek.reinv.domain.buyproduct;
 
-public class ReceiveAmountResDto {
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+public class ReceiveAmountResDto {
+	
+	public Long retailId;
+	
+	public Long amount;
+	
+	public Long orderId;
 }
