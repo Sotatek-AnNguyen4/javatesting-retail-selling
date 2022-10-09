@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sotatek.reinv.infrastructure.util.ResponseData;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -20,11 +22,7 @@ public class BuyProductController {
 	private BuyProductService buyProductService;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public String buyProduct(@RequestBody List<OrdersReqDto> orders, @RequestHeader(value="userId") String userId) throws Exception {
-		String result = buyProductService.buyProduct(orders, Long.parseLong(userId));
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> buyProduct(@RequestBody List<OrdersReqDto> orders, @RequestHeader(value="userId") String userId) throws Exception {
+        return buyProductService.buyProduct(orders, Long.parseLong(userId));
     }
 }

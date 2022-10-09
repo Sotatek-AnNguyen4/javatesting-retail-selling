@@ -5,6 +5,7 @@ server:
 spring:
   application:
     name: retail-inventory
+    baseUrl: http://gateway:8080
   jpa:
     hibernate:
       naming:

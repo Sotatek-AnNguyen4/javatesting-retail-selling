@@ -14,7 +14,9 @@ import com.sotatek.prda.infrastructure.model.Customer;
 import com.sotatek.prda.infrastructure.repository.AccountHistoryRepository;
 import com.sotatek.prda.infrastructure.repository.AccountRepository;
 import com.sotatek.prda.infrastructure.repository.CustomerRepository;
+import com.sotatek.prda.infrastructure.util.ResponseData;
 
+import kong.unirest.HttpStatus;
 import lombok.extern.log4j.Log4j2;
 
 @Service
@@ -30,11 +32,11 @@ public class DepositService {
 	@Autowired
 	private AccountHistoryRepository accountHistoryRepository;
 	
-	public AccountHistory deposit(Long value, Long customerId) {
+	public ResponseData<?> deposit(Long value, Long customerId) {
 		try {
 			Customer customer = customerRepository.findById(customerId).get();
 			if(customer == null) {
-				throw new AccountNotFoundException();
+				throw new Exception("Customer "+ customerId +" doesn't exist");
 			}
 			Account account = accountRepository.findByCustomerId(customerId);
 			if(account == null) {
@@ -52,10 +54,10 @@ public class DepositService {
 			accountHistory.createTime = new Date();
 			accountHistory.amount = value;
 			accountHistoryRepository.save(accountHistory);
-			return accountHistory;
+			return new ResponseData<AccountHistory>(HttpStatus.OK, accountHistory);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return null;
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 }

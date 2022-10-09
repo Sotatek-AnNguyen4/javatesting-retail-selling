@@ -10,6 +10,7 @@ import com.sotatek.reinv.domain.increateinventory.IncreateInventoryController;
 import com.sotatek.reinv.domain.increateinventory.IncreateInventoryReqDto;
 import com.sotatek.reinv.infrastructure.model.Product;
 import com.sotatek.reinv.infrastructure.model.ProductHistory;
+import com.sotatek.reinv.infrastructure.util.ResponseData;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -22,11 +23,7 @@ public class ManageProductController {
 	private ManageProductService manageProductService;
 
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public Product manageProduct(@RequestBody Product product) throws Exception{
-		Product result = manageProductService.addProduct(product);
-		if(result == null) {
-			throw new Exception();
-		}
-		return result;
+    public ResponseData<?> manageProduct(@RequestBody Product product) throws Exception{
+		return manageProductService.addProduct(product);
     }
 }

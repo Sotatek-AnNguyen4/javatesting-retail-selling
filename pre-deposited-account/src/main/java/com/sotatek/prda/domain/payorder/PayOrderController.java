@@ -12,6 +12,7 @@ import com.sotatek.prda.domain.deposit.DepositService;
 import com.sotatek.prda.domain.managecustomer.ManageCustomerService;
 import com.sotatek.prda.infrastructure.model.AccountHistory;
 import com.sotatek.prda.infrastructure.model.Customer;
+import com.sotatek.prda.infrastructure.util.ResponseData;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -24,12 +25,8 @@ public class PayOrderController {
 	private PayOrderService buyProductService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public AccountHistory buyProduct(@RequestHeader(value="userId") String userId, @RequestBody PayOrderReqDto request) throws Exception {
-		AccountHistory result = buyProductService.buyProduct(request.totalAmount, Long.parseLong(userId), request.orderId);
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> buyProduct(@RequestHeader(value="userId") String userId, @RequestBody PayOrderReqDto request) throws Exception {
+		return buyProductService.buyProduct(request.totalAmount, Long.parseLong(userId), request.orderId);
     }
 
 }

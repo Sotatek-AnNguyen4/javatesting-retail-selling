@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sotatek.prda.domain.managecustomer.ManageCustomerService;
 import com.sotatek.prda.infrastructure.model.Customer;
+import com.sotatek.prda.infrastructure.util.ResponseData;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -20,20 +21,12 @@ public class ManageCustomerController {
 	private ManageCustomerService manageCustomerService;
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public Customer customerAdd(@RequestBody Customer customer) throws Exception {
-		Customer result = manageCustomerService.add(customer);
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> customerAdd(@RequestBody Customer customer) throws Exception {
+        return manageCustomerService.add(customer);
     }
 	
 	@RequestMapping(value = "update", method = RequestMethod.PUT)
-    public Customer customerUpdate(@RequestBody Customer customer) throws Exception {
-		Customer result = manageCustomerService.update(customer);
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> customerUpdate(@RequestBody Customer customer) throws Exception {
+		return manageCustomerService.update(customer);
     }
 }

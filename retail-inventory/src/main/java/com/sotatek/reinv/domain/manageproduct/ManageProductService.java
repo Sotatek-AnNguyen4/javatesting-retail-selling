@@ -3,11 +3,15 @@ package com.sotatek.reinv.domain.manageproduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sotatek.reinv.infrastructure.config.AppRunningProperties;
 import com.sotatek.reinv.infrastructure.model.Product;
+import com.sotatek.reinv.infrastructure.model.ProductHistory;
 import com.sotatek.reinv.infrastructure.repository.ProductRepository;
 import com.sotatek.reinv.infrastructure.util.GatewayConst;
+import com.sotatek.reinv.infrastructure.util.ResponseData;
 
 import kong.unirest.HttpResponse;
+import kong.unirest.HttpStatus;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import lombok.extern.log4j.Log4j2;
@@ -19,17 +23,22 @@ public class ManageProductService {
 	@Autowired
 	private ProductRepository productRepository;
 	
-	public Product addProduct(Product product) {
+	@Autowired
+	private AppRunningProperties appRunningProperties;
+	
+	public ResponseData<?> addProduct(Product product) {
 		try {
-			HttpResponse<JsonNode> response = Unirest.get("http://localhost:8080/retail-account/retail/findByRetailId?retailId="+product.retailId)
+			ResponseData response = Unirest.get(appRunningProperties.getBaseUrl() + "/retail-account/retail/findByRetailId?retailId="+product.retailId)
 				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-				      .asJson();
-			if(response.getStatus() != 200) {
-				throw new Exception();
+				      .asObject(ResponseData.class)
+				      .getBody();
+			if(response.code != 200) {
+				throw new Exception(response.data.toString());
 			}
-			return productRepository.save(product);
+			return new ResponseData<Product>(HttpStatus.OK, productRepository.save(product));
 		} catch (Exception e) {
-			return null;
+			log.error(e.getMessage(), e);
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 		
 	}

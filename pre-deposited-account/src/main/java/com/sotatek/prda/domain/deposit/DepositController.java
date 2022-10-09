@@ -27,12 +27,8 @@ public class DepositController {
 	private DepositService depositService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseData deposit(@RequestHeader(value="userId") String userId, @RequestBody DepositReqDto request) throws Exception {
-		AccountHistory result = depositService.deposit(request.value, Long.parseLong(userId));
-		if(result == null) {
-			return new ResponseData<String>(HttpStatus.BAD_REQUEST, "");
-		}
-		return new ResponseData<AccountHistory>(HttpStatus.OK, result);
+    public ResponseData<?> deposit(@RequestHeader(value="userId") String userId, @RequestBody DepositReqDto request) throws Exception {
+		return depositService.deposit(request.value, Long.parseLong(userId));
     }
 
 }

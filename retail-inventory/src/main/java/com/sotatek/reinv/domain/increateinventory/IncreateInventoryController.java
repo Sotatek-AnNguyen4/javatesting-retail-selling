@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sotatek.reinv.infrastructure.model.ProductHistory;
+import com.sotatek.reinv.infrastructure.util.ResponseData;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -19,11 +20,7 @@ public class IncreateInventoryController {
 	private IncreateInventoryService increateInventoryService;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public ProductHistory createOrder(@RequestBody IncreateInventoryReqDto increateInventory) throws Exception{
-		ProductHistory result = increateInventoryService.increateInventory(increateInventory.productId, increateInventory.quantity);
-		if(result == null) {
-			throw new Exception();
-		}
-		return result;
+    public ResponseData<?> createOrder(@RequestBody IncreateInventoryReqDto increateInventory) throws Exception{
+		return increateInventoryService.increateInventory(increateInventory.productId, increateInventory.quantity);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.apache.http.HttpMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,9 @@ import com.sotatek.rea.infrastructure.model.Retail;
 import com.sotatek.rea.infrastructure.repository.AccountHistoryRepository;
 import com.sotatek.rea.infrastructure.repository.AccountRepository;
 import com.sotatek.rea.infrastructure.repository.RetailRepository;
+import com.sotatek.rea.infrastructure.util.ResponseData;
 
+import kong.unirest.HttpStatus;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -30,12 +33,13 @@ public class ReceiveAmountService {
 	@Autowired
 	private RetailRepository retailRepository;
 	
-	public void receiveAmount(List<ReceiveAmountReqDto> request) {
+	public ResponseData<?> receiveAmount(List<ReceiveAmountReqDto> request) {
+		String result = "";
 		for(ReceiveAmountReqDto receiveAmount: request) {
 			try {
 				Retail retail = retailRepository.findById(receiveAmount.retailId).get();
 				if(retail == null) {
-					throw new AccountNotFoundException();
+					throw new Exception("Retail "+ receiveAmount.retailId +" doesn't exist");
 				}
 				
 				Account account = accountRepository.findByRetailId(receiveAmount.retailId);
@@ -56,9 +60,14 @@ public class ReceiveAmountService {
 				accountHistory.type = "receive";
 				accountHistoryRepository.save(accountHistory);
 			} catch (Exception e) {
-				// TODO: handle exception
+				log.error(e.getMessage(), e);
+				result += e.getMessage() + ". ";
 			}
-			
 		}
+		if(result.isEmpty()) {
+			return new ResponseData<String>(HttpStatus.OK, "Done");
+		}
+		return new ResponseData<String>(HttpStatus.BAD_REQUEST, result);
+		
 	}
 }

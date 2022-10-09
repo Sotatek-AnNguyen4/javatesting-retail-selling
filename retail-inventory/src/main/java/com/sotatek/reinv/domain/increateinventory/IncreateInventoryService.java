@@ -11,7 +11,9 @@ import com.sotatek.reinv.infrastructure.model.Product;
 import com.sotatek.reinv.infrastructure.model.ProductHistory;
 import com.sotatek.reinv.infrastructure.repository.ProductHistoryRepository;
 import com.sotatek.reinv.infrastructure.repository.ProductRepository;
+import com.sotatek.reinv.infrastructure.util.ResponseData;
 
+import kong.unirest.HttpStatus;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -24,7 +26,7 @@ public class IncreateInventoryService {
 	@Autowired
 	private ProductHistoryRepository productHistoryRepository;
 	
-	public ProductHistory increateInventory(Long productId, Integer quantity) {
+	public ResponseData<?> increateInventory(Long productId, Integer quantity) {
 		try {
 			Product product = productRepository.findById(productId).get();
 			if(product == null) {
@@ -39,10 +41,10 @@ public class IncreateInventoryService {
 			productHistory.type = "increate";
 			productHistory.quantity = quantity;
 			productHistoryRepository.save(productHistory);
-			return productHistory;
+			return new ResponseData<ProductHistory>(HttpStatus.OK, productHistory);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return null;
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sotatek.rea.infrastructure.model.Retail;
+import com.sotatek.rea.infrastructure.util.ResponseData;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -20,29 +21,17 @@ public class ManageRetailController {
 	private ManageRetailService manageRetailService;
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public Retail retailAdd(@RequestBody Retail retail) throws Exception {
-		Retail result = manageRetailService.add(retail);
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> retailAdd(@RequestBody Retail retail) throws Exception {
+        return manageRetailService.add(retail);
     }
 	
 	@RequestMapping(value = "update", method = RequestMethod.PUT)
-    public Retail retailUpdate(@RequestBody Retail retail) throws Exception {
-		Retail result = manageRetailService.update(retail);
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> retailUpdate(@RequestBody Retail retail) throws Exception {
+        return manageRetailService.update(retail);
     }
 	
 	@RequestMapping(value = "findByRetailId", method = RequestMethod.GET)
-    public Retail retailUpdate(@RequestParam Long retailId) throws Exception {
-		Retail result = manageRetailService.findByRetailId(retailId);
-		if(result == null) {
-			throw new Exception();
-		}
-        return result;
+    public ResponseData<?> retailUpdate(@RequestParam Long retailId) throws Exception {
+        return manageRetailService.findByRetailId(retailId);
     }
 }

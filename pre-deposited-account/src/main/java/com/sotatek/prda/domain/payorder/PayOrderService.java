@@ -13,7 +13,9 @@ import com.sotatek.prda.infrastructure.model.Customer;
 import com.sotatek.prda.infrastructure.repository.AccountHistoryRepository;
 import com.sotatek.prda.infrastructure.repository.AccountRepository;
 import com.sotatek.prda.infrastructure.repository.CustomerRepository;
+import com.sotatek.prda.infrastructure.util.ResponseData;
 
+import kong.unirest.HttpStatus;
 import lombok.extern.log4j.Log4j2;
 
 @Service
@@ -29,19 +31,23 @@ public class PayOrderService {
 	@Autowired
 	private AccountHistoryRepository accountHistoryRepository;
 	
-	public AccountHistory buyProduct(Long totalAmount, Long customerId, Long orderId) {
+	public ResponseData<?> buyProduct(Long totalAmount, Long customerId, Long orderId) {
 		try {
 			Customer customer = customerRepository.findById(customerId).get();
 			if(customer == null) {
-				throw new AccountNotFoundException();
+				throw new Exception("Customer "+ customerId +" doesn't exist");
 			}
 			Account account = accountRepository.findByCustomerId(customerId);
 			if(account == null) {
-				throw new AccountNotFoundException();
+				account = new Account();
+				account.balance = 0L;
+				account.customer = customer;
+				accountRepository.save(account);
 			}
+			log.info("totalAmount: {}", totalAmount);
 			if(totalAmount > account.balance) {
 				log.error("Insufficient balance");
-				throw new AccountNotFoundException();
+				throw new Exception("Customer "+ customerId + " insufficient balance");
 			}
 			account.balance = account.balance - totalAmount;
 			accountRepository.save(account);
@@ -53,10 +59,10 @@ public class PayOrderService {
 			accountHistory.type = "buy";
 			accountHistory.orderId = orderId;
 			accountHistoryRepository.save(accountHistory);
-			return accountHistory;
+			return new ResponseData<AccountHistory>(HttpStatus.OK, accountHistory);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return null;
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 }

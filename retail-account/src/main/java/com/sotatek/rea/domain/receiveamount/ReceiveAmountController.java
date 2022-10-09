@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sotatek.rea.infrastructure.model.AccountHistory;
 import com.sotatek.rea.infrastructure.model.Retail;
+import com.sotatek.rea.infrastructure.util.ResponseData;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -22,8 +23,7 @@ public class ReceiveAmountController {
 	private ReceiveAmountService receiveAmountService;
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public AccountHistory receiveAmount(@RequestBody List<ReceiveAmountReqDto> request) throws Exception {
-		receiveAmountService.receiveAmount(request);
-        return null;
+    public ResponseData<?> receiveAmount(@RequestBody List<ReceiveAmountReqDto> request) throws Exception {
+        return receiveAmountService.receiveAmount(request);
     }
 }
