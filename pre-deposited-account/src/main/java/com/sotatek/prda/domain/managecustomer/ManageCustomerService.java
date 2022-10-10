@@ -26,7 +26,9 @@ public class ManageCustomerService {
 	
 	public ResponseData<?> add(Customer customer) {
 		try {
-			customer.token = org.apache.commons.codec.digest.DigestUtils.sha256Hex(customer.toString() + UUID.randomUUID().toString());
+			if(customer.token.isBlank()) {
+				customer.token = org.apache.commons.codec.digest.DigestUtils.sha256Hex(customer.toString() + UUID.randomUUID().toString());
+			}
 			customerRepository.save(customer);
 			return new ResponseData<Customer>(HttpStatus.OK, customer);
 		} catch (Exception e) {
@@ -41,6 +43,7 @@ public class ManageCustomerService {
 			customerOnDB.email = customer.email;
 			customerOnDB.name = customer.name;
 			customerOnDB.phone = customer.phone;
+			customerOnDB.token = customer.token;
 			customerRepository.save(customerOnDB);
 			return new ResponseData<Customer>(HttpStatus.OK, customerOnDB);
 		} catch (Exception e) {

@@ -3,9 +3,9 @@ services:
   redis:
     image: redis
     container_name: javatesting-redis
-    command: redis-server --save 60 1 --loglevel warning
     ports:
-      - "6379:6379"
+      - '6379:6379'
+    command: redis-server --save 60 1 --loglevel warning
   mysql:
     image: mysql:8.0.25
     container_name: javatesting-mysql
@@ -30,6 +30,7 @@ services:
       - 8600:8600/udp
 #   lib:
 #     build: lib/.
+
   gateway:
     build: gateway/.
     container_name: javatesting-gateway
@@ -47,7 +48,7 @@ services:
   retail-inventory:
     build: retail-inventory/.
     container_name: javatesting-retail_inventory
-    
-networks:
-  javatesting-network:
-    driver: bridge
+
+volumes:
+  cache:
+    driver: local
