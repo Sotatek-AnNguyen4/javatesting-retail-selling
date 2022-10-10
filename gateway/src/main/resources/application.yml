@@ -5,7 +5,18 @@ server:
 spring:
   application:
     name: gateway
+  redis:
+    host: javatesting-redis
+    port: 6379
   cloud:
     loadbalancer:
       ribbon:
         enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      default-filters:
+        - name: AuthenUserFilter
+        - name: ModifyHeaderFilter
+        

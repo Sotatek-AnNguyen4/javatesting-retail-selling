@@ -1,0 +1,53 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    container_name: javatesting-redis
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - "6379:6379"
+  mysql:
+    image: mysql:8.0.25
+    container_name: javatesting-mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql_mode="" --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 1
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 1
+      LANG: C.UTF-8
+    ports:
+      - 13306:3306
+    volumes: 
+      - ./database:/docker-entrypoint-initdb.d
+  consul:
+    image: consul
+    container_name: javatesting-consul
+    command: agent -server -ui -node=server-1 -bootstrap -client=0.0.0.0 -enable-script-checks
+    environment:
+      CONSUL_LOCAL_CONFIG: '{"acl": {"enabled" : true}}'
+    ports:
+      - 8500:8500
+      - 8600:8600/udp
+#   lib:
+#     build: lib/.
+  gateway:
+    build: gateway/.
+    container_name: javatesting-gateway
+    ports:
+      - "18000:8080"
+  order:
+    build: order/.
+    container_name: javatesting-order
+  pre-deposited-account:
+    build: pre-deposited-account/.
+    container_name: javatesting-pre_deposited_account
+  retail-account:
+    build: retail-account/.
+    container_name: javatesting-retail_account
+  retail-inventory:
+    build: retail-inventory/.
+    container_name: javatesting-retail_inventory
+    
+networks:
+  javatesting-network:
+    driver: bridge

@@ -5,3 +5,8 @@ server:
 spring:
   application:
     name: retail-inventory
+    baseUrl: http://gateway:8080
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

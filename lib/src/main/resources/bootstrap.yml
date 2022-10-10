@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    consul:
+      discovery:
+#        prefer-ip-address: true
+#        ip-address: 192.168.80.104
+        hostname: order
+
+        port: 8082
+        healthCheckPath: /health
+      host: javatesting-consul
+      port: 8500
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://javatesting-mysql:3306/retailselling_order
+    username: root
+    password: 1
+    driver-class-name: com.mysql.jdbc.Driver
