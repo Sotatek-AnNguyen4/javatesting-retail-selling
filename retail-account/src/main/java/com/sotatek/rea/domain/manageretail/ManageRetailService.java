@@ -22,7 +22,9 @@ public class ManageRetailService {
 	
 	public ResponseData<?> add(Retail retail) {
 		try {
-			retail.token = org.apache.commons.codec.digest.DigestUtils.sha256Hex(retail.toString() + UUID.randomUUID().toString());
+			if(retail.token.isBlank()) {
+				retail.token = org.apache.commons.codec.digest.DigestUtils.sha256Hex(retail.toString() + UUID.randomUUID().toString());
+			}
 			retailRepository.save(retail);
 			return new ResponseData<Retail>(HttpStatus.OK, retail);
 		} catch (Exception e) {
@@ -37,6 +39,7 @@ public class ManageRetailService {
 			retailOnDB.email = retail.email;
 			retailOnDB.name = retail.name;
 			retailOnDB.phone = retail.phone;
+			retailOnDB.token = retail.token;
 			retailRepository.save(retailOnDB);
 			return new ResponseData<Retail>(HttpStatus.OK, retailOnDB);
 		} catch (Exception e) {
