@@ -1,11 +1,10 @@
 
 server:
-  port: 8084
+  port: 8082
   
 spring:
   application:
-    name: retail-inventory
-    baseUrl: ${BASE_GATEWAY}
+    name: order
   jpa:
     hibernate:
       naming:
