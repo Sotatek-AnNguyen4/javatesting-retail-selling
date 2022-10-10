@@ -38,7 +38,7 @@ public class CreateOrderService {
 				throw new Exception("Product list is empty");
 			}
 			if(customerId == null || customerId <= 0) {
-				throw new Exception("Customer doesn't existy");
+				throw new Exception("Customer doesn't exist");
 			}
 			// deducted from customer’s pre-deposited account
 			Long totalAmount = 0L;

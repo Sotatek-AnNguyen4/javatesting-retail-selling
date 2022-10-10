@@ -35,8 +35,20 @@ public class ReceiveAmountService {
 	
 	public ResponseData<?> receiveAmount(List<ReceiveAmountReqDto> request) {
 		String result = "";
+		if(request == null) {
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, "request doesn't exist");
+		}
 		for(ReceiveAmountReqDto receiveAmount: request) {
 			try {
+				if(receiveAmount.retailId == null || receiveAmount.retailId <= 0) {
+					throw new Exception("retailId doesn't exist");
+				}
+				if(receiveAmount.amount == null || receiveAmount.amount <= 0) {
+					throw new Exception("amount doesn't exist");
+				}
+				if(receiveAmount.orderId == null || receiveAmount.orderId <= 0) {
+					throw new Exception("orderId doesn't exist");
+				}
 				Retail retail = retailRepository.findById(receiveAmount.retailId).get();
 				if(retail == null) {
 					throw new Exception("Retail "+ receiveAmount.retailId +" doesn't exist");
@@ -48,6 +60,9 @@ public class ReceiveAmountService {
 					account.balance = 0L;
 					account.retail = retail;
 					accountRepository.save(account);
+				}
+				if(account.balance == null) {
+					account.balance = 0L;
 				}
 				account.balance = account.balance + receiveAmount.amount;
 				accountRepository.save(account);
@@ -64,7 +79,7 @@ public class ReceiveAmountService {
 				result += e.getMessage() + ". ";
 			}
 		}
-		if(result.isEmpty()) {
+		if(request.size() > 0 && result.isEmpty()) {
 			return new ResponseData<String>(HttpStatus.OK, "Done");
 		}
 		return new ResponseData<String>(HttpStatus.BAD_REQUEST, result);

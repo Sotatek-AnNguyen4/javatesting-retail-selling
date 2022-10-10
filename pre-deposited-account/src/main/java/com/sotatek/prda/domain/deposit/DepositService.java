@@ -34,6 +34,12 @@ public class DepositService {
 	
 	public ResponseData<?> deposit(Long value, Long customerId) {
 		try {
+			if(value == null || value <= 0) {
+				throw new Exception("value doesn't exist");
+			}
+			if(customerId == null || customerId <= 0) {
+				throw new Exception("customerId doesn't exist");
+			}
 			Customer customer = customerRepository.findById(customerId).get();
 			if(customer == null) {
 				throw new Exception("Customer "+ customerId +" doesn't exist");
@@ -44,6 +50,9 @@ public class DepositService {
 				account.setBalance(0L);
 				account.setCustomer(customer);
 				accountRepository.save(account);
+			}
+			if(account.balance == null) {
+				account.balance = 0L;
 			}
 			account.balance = account.balance + value;
 			accountRepository.save(account);

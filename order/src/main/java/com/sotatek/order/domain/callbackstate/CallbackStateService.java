@@ -19,6 +19,12 @@ public class CallbackStateService {
 
 	public ResponseData<?> callbackState(Long orderId, String state) {
 		try {
+			if(orderId == null || orderId <= 0) {
+				throw new Exception("orderId is in wrong format");
+			}
+			if(state.isBlank()) {
+				throw new Exception("state is in wrong format");
+			}
 			Order order = orderRepository.findById(orderId).get();
 			order.state = state;
 			order.createTime = new Date();

@@ -33,6 +33,15 @@ public class PayOrderService {
 	
 	public ResponseData<?> buyProduct(Long totalAmount, Long customerId, Long orderId) {
 		try {
+			if(totalAmount == null) {
+				throw new Exception("totalAmount doesn't exist");
+			}
+			if(customerId == null || customerId <= 0) {
+				throw new Exception("customerId doesn't exist");
+			}
+			if(orderId == null || orderId <= 0) {
+				throw new Exception("orderId doesn't exist");
+			}
 			Customer customer = customerRepository.findById(customerId).get();
 			if(customer == null) {
 				throw new Exception("Customer "+ customerId +" doesn't exist");
@@ -45,6 +54,9 @@ public class PayOrderService {
 				accountRepository.save(account);
 			}
 			log.info("totalAmount: {}", totalAmount);
+			if(account.balance == null) {
+				account.balance = 0L;
+			}
 			if(totalAmount > account.balance) {
 				log.error("Insufficient balance");
 				throw new Exception("Customer "+ customerId + " insufficient balance");
