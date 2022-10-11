@@ -46,19 +46,6 @@ Object: Customer, Retail
 6. DDD design
 
 ==========================================<br />
-# Project structure
-
-Services:
-1. Gateway
-2. Pre-Deposited account
-3. Order
-4. Retail account
-5. Retail inventory<br />
-Lib:
-1. Parent
-2. Data
-
-==========================================<br />
 # System design
 <div align="left">
 <img alt="System design" src="https://i.ibb.co/7gj95Xs/system-design.png">
