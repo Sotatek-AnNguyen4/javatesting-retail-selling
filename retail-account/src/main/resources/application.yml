@@ -7,8 +7,8 @@ spring:
     name: retail-account
     baseUrl: http://gateway:8080
   redis:
-    host: javatesting-redis
-    port: 6379
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
   jpa:
     hibernate:
       naming:

@@ -1,5 +1,6 @@
 package com.sotatek.prda.domain.managecustomer;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -31,6 +32,18 @@ public class ManageCustomerService {
 			}
 			customerRepository.save(customer);
 			return new ResponseData<Customer>(HttpStatus.OK, customer);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+	
+	public ResponseData<?> add(List<Customer> customers) {
+		try {
+			for(Customer customer: customers) {
+				this.add(customer);
+			}
+			return new ResponseData<String>(HttpStatus.OK, "Done");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());

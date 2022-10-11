@@ -1,5 +1,7 @@
 package com.sotatek.rea.domain.manageretail;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +23,8 @@ public class ManageRetailController {
 	private ManageRetailService manageRetailService;
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public ResponseData<?> retailAdd(@RequestBody Retail retail) throws Exception {
-        return manageRetailService.add(retail);
+    public ResponseData<?> retailAdd(@RequestBody List<Retail> retails) throws Exception {
+        return manageRetailService.add(retails);
     }
 	
 	@RequestMapping(value = "update", method = RequestMethod.PUT)

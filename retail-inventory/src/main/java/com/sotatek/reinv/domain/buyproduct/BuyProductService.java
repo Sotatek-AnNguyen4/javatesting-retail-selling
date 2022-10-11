@@ -39,6 +39,12 @@ public class BuyProductService {
 	
 	public ResponseData<?> buyProduct(List<OrdersReqDto> orders, Long customerId) {
 		try {
+			if(customerId == null || customerId <= 0) {
+				throw new Exception("customerId doesn't exist");
+			}
+			if(orders == null || orders.size() <= 0) {
+				throw new Exception("orders doesn't exist");
+			}
 			List<CreateOrderResDto> createOrderList = new ArrayList<>();
 			Long totalAmount = 0L;
 			for (OrdersReqDto order : orders) {

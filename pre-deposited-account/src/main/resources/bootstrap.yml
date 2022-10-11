@@ -2,21 +2,21 @@ spring:
   cloud:
     consul:
       discovery:
-#        prefer-ip-address: true
-#        ip-address: 192.168.80.104
-        hostname: pre-deposited-account
+        prefer-ip-address: true
+        ip-address: 192.168.65.2
+#        hostname: pre-deposited-account
 
         port: 8081
         healthCheckPath: /health
-      host: javatesting-consul
-      port: 8500
+      host: ${CONSUL_HOST}
+      port: ${CONSUL_PORT}
       enabled: true
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:mysql://javatesting-mysql:3306/retailselling_predepositedaccount
-    username: root
-    password: 1
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.jdbc.Driver

@@ -34,15 +34,21 @@ public class CreateOrderService {
 	
 	public ResponseData<?> createOrder(List<CreateOrderReqDto> products, Long customerId) {
 		try {
-			/**
-			 * 	public Long totalAmount;
-			 *  public Long orderId;
-			 */
+			if(products.size() == 0) {
+				throw new Exception("Product list is empty");
+			}
+			if(customerId == null || customerId <= 0) {
+				throw new Exception("Customer doesn't exist");
+			}
 			// deducted from customer’s pre-deposited account
 			Long totalAmount = 0L;
 			for (CreateOrderReqDto createOrderReqDto : products) {
+				if(createOrderReqDto.price == null || createOrderReqDto.quantity == null) {
+					throw new Exception("Product list is in wrong format");
+				}
 				totalAmount += createOrderReqDto.price * createOrderReqDto.quantity;
 			}
+			
 			Order order = new Order();
 			order.customerId = customerId;
 			order.createTime = new Date();

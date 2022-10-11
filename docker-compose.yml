@@ -28,26 +28,62 @@ services:
     ports:
       - 8500:8500
       - 8600:8600/udp
-#   lib:
-#     build: lib/.
+  lib:
+    build: lib/.
 
   gateway:
     build: gateway/.
     container_name: javatesting-gateway
+    environment:
+      REDIS_HOST: javatesting-redis
+      REDIS_PORT: 6379
+      CONSUL_HOST: javatesting-consul
+      CONSUL_PORT: 8500
     ports:
       - "18000:8080"
   order:
     build: order/.
     container_name: javatesting-order
+    environment:
+      CONSUL_HOST: javatesting-consul
+      CONSUL_PORT: 8500
+      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_order
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 1
   pre-deposited-account:
     build: pre-deposited-account/.
     container_name: javatesting-pre_deposited_account
+    environment:
+      REDIS_HOST: javatesting-redis
+      REDIS_PORT: 6379
+      CONSUL_HOST: javatesting-consul
+      CONSUL_PORT: 8500
+      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_predepositedaccount
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 1    
   retail-account:
     build: retail-account/.
     container_name: javatesting-retail_account
+    environment:
+      REDIS_HOST: javatesting-redis
+      REDIS_PORT: 6379
+      CONSUL_HOST: javatesting-consul
+      CONSUL_PORT: 8500
+      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailaccount
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 1      
   retail-inventory:
     build: retail-inventory/.
     container_name: javatesting-retail_inventory
+    environment:
+      REDIS_HOST: javatesting-redis
+      REDIS_PORT: 6379
+      CONSUL_HOST: javatesting-consul
+      CONSUL_PORT: 8500
+      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailinventory
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 1
+      BASE_GATEWAY: http://gateway:8080
 
 volumes:
   cache:

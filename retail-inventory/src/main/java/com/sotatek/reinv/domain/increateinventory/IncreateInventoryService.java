@@ -28,9 +28,18 @@ public class IncreateInventoryService {
 	
 	public ResponseData<?> increateInventory(Long productId, Integer quantity) {
 		try {
+			if(productId == null || productId <= 0) {
+				throw new Exception("productId doesn't exist");
+			}
+			if(quantity == null || quantity <= 0) {
+				throw new Exception("quantity doesn't exist");
+			}
 			Product product = productRepository.findById(productId).get();
 			if(product == null) {
-				throw new AccountNotFoundException();
+				throw new Exception("Product "+ productId +" doesn't exist");
+			}
+			if(product.quantity == null) {
+				product.quantity = 0;
 			}
 			product.quantity = product.quantity + quantity;
 			productRepository.save(product);

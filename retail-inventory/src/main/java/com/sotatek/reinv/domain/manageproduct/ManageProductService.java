@@ -1,5 +1,7 @@
 package com.sotatek.reinv.domain.manageproduct;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,19 @@ public class ManageProductService {
 				throw new Exception(response.data.toString());
 			}
 			return new ResponseData<Product>(HttpStatus.OK, productRepository.save(product));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+		
+	}
+	
+	public ResponseData<?> addProduct(List<Product> products) {
+		try {
+			for(Product product: products) {
+				this.addProduct(product);
+			}
+			return new ResponseData<String>(HttpStatus.OK, "Done");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
