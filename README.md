@@ -7,9 +7,8 @@
 4. Retail can invoke a REST API to increase the product inventory.
 5. Retail will have a scheduler job that can do the account balance settlement everyday. Comparing the sold product value and retail account balance, 2 amount should be equally.
 
-———————————————————————————————
-
-Object: Customer, Retail
+———————————————————————————————</br>
+<h2><b>Brief</b></h2>
 
 1. Pre-Deposited account: 
     - customer can do the deposit: Adding balance
@@ -37,13 +36,14 @@ Object: Customer, Retail
 5. Code must be configurable and extensible. Follow the SOLID principles. Will add new features during the online interview.
 6. DDD design methodology is better to have. Clearing design for the Boundary Context and Aggregate Root.
 
-———————————————————————————————
-1. Spring, Spring Boot, Spring Cloud
-2. REST API
-3. Microservices
-4. Unit testing: least 80%
-5. SOLID principles
-6. DDD design
+———————————————————————————————<br />
+<h2><b>Brief</b></h2>
+1. Spring, Spring Boot, Spring Cloud<br />
+2. REST API<br />
+3. Microservices<br />
+4. Unit testing: least 80%<br />
+5. SOLID principles<br />
+6. DDD design<br />
 
 ==========================================<br />
 # System design
