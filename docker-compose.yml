@@ -28,8 +28,8 @@ services:
     ports:
       - 8500:8500
       - 8600:8600/udp
-  lib:
-    build: lib/.
+  # lib:
+  #   build: lib/.
 
   gateway:
     build: gateway/.
@@ -50,6 +50,9 @@ services:
       MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_order
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: 1
+    depends_on:
+      mysql:
+        condition: service_healthy
   pre-deposited-account:
     build: pre-deposited-account/.
     container_name: javatesting-pre_deposited_account
@@ -60,7 +63,10 @@ services:
       CONSUL_PORT: 8500
       MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_predepositedaccount
       MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 1    
+      MYSQL_PASSWORD: 1
+    depends_on:
+      mysql:
+        condition: service_healthy
   retail-account:
     build: retail-account/.
     container_name: javatesting-retail_account
@@ -71,7 +77,10 @@ services:
       CONSUL_PORT: 8500
       MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailaccount
       MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 1      
+      MYSQL_PASSWORD: 1
+    depends_on:
+      mysql:
+        condition: service_healthy
   retail-inventory:
     build: retail-inventory/.
     container_name: javatesting-retail_inventory
@@ -84,6 +93,9 @@ services:
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: 1
       BASE_GATEWAY: http://gateway:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
 
 volumes:
   cache:
