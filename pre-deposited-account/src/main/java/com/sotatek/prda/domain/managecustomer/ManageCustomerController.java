@@ -1,5 +1,7 @@
 package com.sotatek.prda.domain.managecustomer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +23,8 @@ public class ManageCustomerController {
 	private ManageCustomerService manageCustomerService;
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public ResponseData<?> customerAdd(@RequestBody Customer customer) throws Exception {
-        return manageCustomerService.add(customer);
+    public ResponseData<?> customerAdd(@RequestBody List<Customer> customers) throws Exception {
+        return manageCustomerService.add(customers);
     }
 	
 	@RequestMapping(value = "update", method = RequestMethod.PUT)

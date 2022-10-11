@@ -28,8 +28,8 @@ services:
     ports:
       - 8500:8500
       - 8600:8600/udp
-  # lib:
-  #   build: lib/.
+  lib:
+    build: lib/.
 
   gateway:
     build: gateway/.

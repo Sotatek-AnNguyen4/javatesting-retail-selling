@@ -1,5 +1,7 @@
 package com.sotatek.reinv.domain.manageproduct;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ public class ManageProductController {
 	private ManageProductService manageProductService;
 
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public ResponseData<?> manageProduct(@RequestBody Product product) throws Exception{
-		return manageProductService.addProduct(product);
+    public ResponseData<?> manageProduct(@RequestBody List<Product> products) throws Exception{
+		return manageProductService.addProduct(products);
     }
 }

@@ -1,5 +1,6 @@
 package com.sotatek.rea.domain.manageretail;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,18 @@ public class ManageRetailService {
 			}
 			retailRepository.save(retail);
 			return new ResponseData<Retail>(HttpStatus.OK, retail);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+	
+	public ResponseData<?> add(List<Retail> retails) {
+		try {
+			for(Retail retail: retails) {
+				this.add(retail);
+			}
+			return new ResponseData<String>(HttpStatus.OK, "Done");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return new ResponseData<String>(HttpStatus.BAD_REQUEST, e.getMessage());
