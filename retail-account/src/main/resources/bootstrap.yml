@@ -2,9 +2,9 @@ spring:
   cloud:
     consul:
       discovery:
-        prefer-ip-address: true
-        ip-address: 192.168.65.2
-#        hostname: retail-account
+#        prefer-ip-address: true
+#        ip-address: 192.168.65.2
+        hostname: retail-account
 
         port: 8083
         healthCheckPath: /health

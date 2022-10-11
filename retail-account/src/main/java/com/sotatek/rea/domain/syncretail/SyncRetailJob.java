@@ -29,7 +29,7 @@ public class SyncRetailJob {
 	@Autowired
     private RedisTemplate<Object, Object> redisTemplate;
 
-	@Scheduled(fixedRate = 180000)
+	@Scheduled(fixedRate = 5000)
     @Transactional(readOnly = true)
     public void running() {
 		ObjectMapper mapper = new ObjectMapper();  

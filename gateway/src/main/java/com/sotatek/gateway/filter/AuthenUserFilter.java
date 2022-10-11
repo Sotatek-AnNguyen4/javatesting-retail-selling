@@ -56,15 +56,16 @@ public class AuthenUserFilter extends AbstractGatewayFilterFactory<AuthenUserFil
         		User user = JSONObject.parseObject(userObject.toString(), User.class);
         		exchange.getAttributes().put(GatewayConst.IS_ADMIN, false);
         		String serviceId = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_PREDICATE_MATCHED_PATH_ROUTE_ID_ATTR).toString();
+        		log.info("serviceId: {}", serviceId);
         		// TODO authen service
         		if(user.type.equals("customer")) {
-        			if(!serviceId.equals("pre-deposited-account")) {
+        			if(serviceId.indexOf("pre-deposited-account") == -1 && serviceId.indexOf("retail-inventory") == -1) {
         				ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
                         ServerWebExchangeUtils.setAlreadyRouted(exchange);
                         return exchange.getResponse().setComplete();
         			}
         		} else if(user.type.equals("retail")) {
-        			if(!serviceId.equals("retail-inventory")) {
+        			if(serviceId.indexOf("retail-inventory") == -1) {
         				ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
                         ServerWebExchangeUtils.setAlreadyRouted(exchange);
                         return exchange.getResponse().setComplete();
