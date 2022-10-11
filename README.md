@@ -65,7 +65,7 @@ Object: Customer, Retail
 ==========================================<br />
 # Run a local
 
-1. docker-compose up -d
+<pre>docker-compose up -d</pre>
 
 ==========================================<br />
 # Init the base data
